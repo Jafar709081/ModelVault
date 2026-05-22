@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Navbar from "@/components/layout/Navbar";
 import HeroSection from "@/components/features/HeroSection";
 import StatsBar from "@/components/features/StatsBar";
@@ -8,15 +9,17 @@ import Footer from "@/components/layout/Footer";
 import StarBackground from "@/components/features/StarBackground";
 
 export default function Home() {
+  const [searchQuery, setSearchQuery] = useState("");
+
   return (
-    <div className="bg-gradient-radial min-h-screen" style={{ backgroundColor: "#0a0a0a" }}>
+    <div className="page-root min-h-screen">
       <StarBackground />
       <Navbar />
       <main>
-        <HeroSection />
+        <HeroSection searchQuery={searchQuery} onSearchChange={setSearchQuery} />
         <StatsBar />
         <hr className="gradient-divider" />
-        <FeaturedProjects />
+        <FeaturedProjects searchQuery={searchQuery} />
         <HowItWorks />
         <hr className="gradient-divider" />
         <Categories />

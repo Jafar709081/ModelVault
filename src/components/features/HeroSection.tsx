@@ -1,4 +1,5 @@
 import { Search } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const POPULAR_TAGS = [
   "#GasLeakDetector",
@@ -9,7 +10,20 @@ const POPULAR_TAGS = [
   "#SolarMonitor",
 ];
 
-export default function HeroSection() {
+interface Props {
+  searchQuery: string;
+  onSearchChange: (q: string) => void;
+}
+
+export default function HeroSection({ searchQuery, onSearchChange }: Props) {
+  const navigate = useNavigate();
+
+  const handleTagClick = (tag: string) => {
+    // strip # and use as search term
+    onSearchChange(tag.replace("#", ""));
+    document.getElementById("featured")?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <section className="hero">
       {/* Eyebrow */}
@@ -41,8 +55,15 @@ export default function HeroSection() {
             type="text"
             className="search-input"
             placeholder="Search projects, components, categories..."
+            value={searchQuery}
+            onChange={(e) => onSearchChange(e.target.value)}
           />
-          <button className="search-btn">
+          <button
+            className="search-btn"
+            onClick={() =>
+              document.getElementById("featured")?.scrollIntoView({ behavior: "smooth" })
+            }
+          >
             <Search size={16} />
             Search
           </button>
@@ -53,7 +74,11 @@ export default function HeroSection() {
       <div className="tags-row fade-in-up delay-4">
         <span className="tags-label">Popular:</span>
         {POPULAR_TAGS.map((tag) => (
-          <button key={tag} className="tag-chip">
+          <button
+            key={tag}
+            className={`tag-chip${searchQuery === tag.replace("#", "") ? " tag-chip-active" : ""}`}
+            onClick={() => handleTagClick(tag)}
+          >
             {tag}
           </button>
         ))}
@@ -61,12 +86,19 @@ export default function HeroSection() {
 
       {/* CTAs */}
       <div className="cta-group fade-in-up delay-5">
-        <a href="#featured" className="btn-primary">
+        <a
+          href="#featured"
+          className="btn-primary"
+          onClick={(e) => {
+            e.preventDefault();
+            document.getElementById("featured")?.scrollIntoView({ behavior: "smooth" });
+          }}
+        >
           Explore Projects
         </a>
-        <a href="#upload" className="btn-outline">
+        <button className="btn-outline" onClick={() => navigate("/login")}>
           Upload Your Model +
-        </a>
+        </button>
       </div>
     </section>
   );

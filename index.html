@@ -38,6 +38,15 @@
       "description": "A platform where college students upload and showcase engineering and IoT project models."
     }
     </script>
+    <!-- Prevent FOUC: apply saved theme before React mounts -->
+    <script>
+      try {
+        var t = localStorage.getItem('mv-theme');
+        document.documentElement.setAttribute('data-theme', t === 'light' ? 'light' : 'dark');
+      } catch(e) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

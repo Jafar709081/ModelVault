@@ -1,7 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import type { Project } from "@/types/project";
 
 interface Props {
   project: Project;
+  searchQuery?: string;
 }
 
 function getChipClass(style: string) {
@@ -14,9 +16,34 @@ function getChipClass(style: string) {
   }
 }
 
-export default function ProjectCard({ project }: Props) {
+function highlight(text: string, query: string): React.ReactNode {
+  if (!query.trim()) return text;
+  const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`, "gi");
+  const parts = text.split(regex);
+  return parts.map((part, i) =>
+    regex.test(part) ? (
+      <mark key={i} className="search-highlight">
+        {part}
+      </mark>
+    ) : (
+      part
+    )
+  );
+}
+
+export default function ProjectCard({ project, searchQuery = "" }: Props) {
+  const navigate = useNavigate();
+
   return (
-    <article className="bento-card">
+    <article
+      className="bento-card"
+      onClick={() => navigate(`/project/${project.id}`)}
+      style={{ cursor: "pointer" }}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => e.key === "Enter" && navigate(`/project/${project.id}`)}
+      aria-label={`View ${project.title}`}
+    >
       <img
         src={project.imageUrl}
         alt={project.title}
@@ -30,12 +57,12 @@ export default function ProjectCard({ project }: Props) {
         <div className="bento-card-tags">
           {project.tags.map((tag) => (
             <span key={tag} className={getChipClass(project.tagStyle)}>
-              {tag}
+              {highlight(tag, searchQuery)}
             </span>
           ))}
         </div>
-        <h3 className="bento-card-title">{project.title}</h3>
-        <p className="bento-card-desc">{project.description}</p>
+        <h3 className="bento-card-title">{highlight(project.title, searchQuery)}</h3>
+        <p className="bento-card-desc">{highlight(project.description, searchQuery)}</p>
         <div className="bento-card-footer">
           <div className="bento-card-badges">
             <span className="badge-cost">{project.cost}</span>
@@ -51,7 +78,7 @@ export default function ProjectCard({ project }: Props) {
                   `https://ui-avatars.com/api/?name=${encodeURIComponent(project.student)}&background=8b5cf6&color=fff&size=28`;
               }}
             />
-            <span className="student-name">{project.student}</span>
+            <span className="student-name">{highlight(project.student, searchQuery)}</span>
           </div>
         </div>
       </div>

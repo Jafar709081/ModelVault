@@ -9,4 +9,13 @@ export interface Project {
   student: string;
   avatarUrl: string;
   imageUrl: string;
+  // Extended fields for detail page
+  type?: "physical" | "software";
+  category?: string;
+  components?: { name: string; price: number }[];
+  storeType?: "online" | "local" | "both";
+  storeName?: string;
+  tools?: string[];
+  projectLink?: string;
+  uploadedDaysAgo?: number;
 }
