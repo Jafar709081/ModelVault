@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import PageTransition from "@/components/features/PageTransition";
 import {
   ArrowLeft, Share2, Bookmark, Upload, ExternalLink,
   X, ChevronLeft, ChevronRight, ImageOff, CheckCircle, Copy,
@@ -22,6 +23,7 @@ export default function ProjectDetail() {
 
   if (!project) {
     return (
+      <PageTransition>
       <div className="page-root min-h-screen" style={{ display: "flex", flexDirection: "column" }}>
         <Navbar />
         <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "1rem", padding: "4rem 1rem" }}>
@@ -31,6 +33,7 @@ export default function ProjectDetail() {
         </div>
         <Footer />
       </div>
+      </PageTransition>
     );
   }
 
@@ -74,6 +77,7 @@ export default function ProjectDetail() {
   const uploadLabel = daysAgo === 0 ? "Today" : daysAgo === 1 ? "Yesterday" : `${daysAgo} days ago`;
 
   return (
+    <PageTransition>
     <div className="page-root min-h-screen">
       <Navbar />
 
@@ -387,5 +391,6 @@ export default function ProjectDetail() {
 
       <Footer />
     </div>
+    </PageTransition>
   );
 }

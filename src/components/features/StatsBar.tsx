@@ -1,3 +1,5 @@
+import { useScrollReveal } from "@/hooks/useScrollReveal";
+
 const STATS = [
   {
     icon: "🔧",
@@ -20,14 +22,16 @@ const STATS = [
 ];
 
 export default function StatsBar() {
+  const containerRef = useScrollReveal<HTMLDivElement>();
+
   return (
     <section className="stats-section">
-      <div className="stats-grid">
+      <div className="stats-grid" ref={containerRef}>
         {STATS.map((stat, i) => (
           <div
             key={stat.label}
-            className={`stat-card ${stat.glow} fade-in-up`}
-            style={{ animationDelay: `${i * 0.12}s` }}
+            className={`stat-card ${stat.glow} reveal`}
+            style={{ "--stagger": i } as React.CSSProperties}
           >
             <span className="stat-icon">{stat.icon}</span>
             <div className="stat-number">{stat.number}</div>

@@ -1,3 +1,5 @@
+import { useScrollReveal } from "@/hooks/useScrollReveal";
+
 const CATEGORIES = [
   { icon: "📡", name: "IoT", count: "42 projects" },
   { icon: "🤖", name: "Robotics", count: "31 projects" },
@@ -10,16 +12,22 @@ const CATEGORIES = [
 ];
 
 export default function Categories() {
+  const containerRef = useScrollReveal<HTMLDivElement>();
+
   return (
     <section className="categories-section" id="categories">
       <div className="container">
-        <h2 className="section-title-centered">Browse by Category</h2>
-        <p className="section-sub-centered">
+        <h2 className="section-title-centered reveal-heading">Browse by Category</h2>
+        <p className="section-sub-centered reveal-heading" style={{ animationDelay: "0.08s" }}>
           Explore projects organized by domain — find exactly what inspires you.
         </p>
-        <div className="categories-grid">
-          {CATEGORIES.map((cat) => (
-            <button key={cat.name} className="category-card">
+        <div className="categories-grid" ref={containerRef}>
+          {CATEGORIES.map((cat, i) => (
+            <button
+              key={cat.name}
+              className="category-card reveal"
+              style={{ "--stagger": i } as React.CSSProperties}
+            >
               <span className="category-icon">{cat.icon}</span>
               <span className="category-name">{cat.name}</span>
               <span className="category-count">{cat.count}</span>

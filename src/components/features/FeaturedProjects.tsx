@@ -1,4 +1,5 @@
 import { Search } from "lucide-react";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 import ProjectCard from "@/components/features/ProjectCard";
 import { SAMPLE_PROJECTS } from "@/constants/projects";
 
@@ -8,6 +9,7 @@ interface Props {
 
 export default function FeaturedProjects({ searchQuery = "" }: Props) {
   const q = searchQuery.trim().toLowerCase();
+  const gridRef = useScrollReveal<HTMLDivElement>({ rootMargin: "-40px" });
 
   const filtered = q
     ? SAMPLE_PROJECTS.filter((p) => {
@@ -29,11 +31,11 @@ export default function FeaturedProjects({ searchQuery = "" }: Props) {
     <section className="section" id="featured">
       <div className="container">
         <div className="section-header">
-          <h2 className="section-title">
+          <h2 className="section-title reveal-heading">
             {q ? `Search results for "${searchQuery}"` : "Featured Projects"}
           </h2>
           {!q && (
-            <a href="#" className="view-all-link">
+            <a href="#" className="view-all-link reveal-heading" style={{ animationDelay: "0.1s" }}>
               View All →
             </a>
           )}
@@ -50,9 +52,15 @@ export default function FeaturedProjects({ searchQuery = "" }: Props) {
             </p>
           </div>
         ) : (
-          <div className="bento-grid">
-            {filtered.map((project) => (
-              <ProjectCard key={project.id} project={project} searchQuery={searchQuery} />
+          <div className="bento-grid" ref={gridRef}>
+            {filtered.map((project, i) => (
+              <div
+                key={project.id}
+                className="reveal"
+                style={{ "--stagger": i } as React.CSSProperties}
+              >
+                <ProjectCard project={project} searchQuery={searchQuery} />
+              </div>
             ))}
           </div>
         )}

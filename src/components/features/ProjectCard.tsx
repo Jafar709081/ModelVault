@@ -38,7 +38,7 @@ export default function ProjectCard({ project, searchQuery = "" }: Props) {
     <article
       className="bento-card"
       onClick={() => navigate(`/project/${project.id}`)}
-      style={{ cursor: "pointer" }}
+      style={{ cursor: "pointer", height: "100%" }}
       role="button"
       tabIndex={0}
       onKeyDown={(e) => e.key === "Enter" && navigate(`/project/${project.id}`)}

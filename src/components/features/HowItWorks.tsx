@@ -1,3 +1,5 @@
+import { useScrollReveal } from "@/hooks/useScrollReveal";
+
 const HOW_CARDS = [
   {
     icon: "📤",
@@ -34,18 +36,20 @@ const HOW_CARDS = [
 ];
 
 export default function HowItWorks() {
+  const containerRef = useScrollReveal<HTMLDivElement>();
+
   return (
     <section className="how-section" id="about">
-      <h2 className="section-title-centered">How It Works</h2>
-      <p className="section-sub-centered">
+      <h2 className="section-title-centered reveal-heading">How It Works</h2>
+      <p className="section-sub-centered reveal-heading" style={{ animationDelay: "0.08s" }}>
         From inspiration to implementation — ModelVault guides every step.
       </p>
-      <div className="how-grid">
+      <div className="how-grid" ref={containerRef}>
         {HOW_CARDS.map((card, i) => (
           <div
             key={card.title}
-            className={`how-card fade-in-up`}
-            style={{ animationDelay: `${i * 0.1}s` }}
+            className="how-card reveal"
+            style={{ "--stagger": i } as React.CSSProperties}
           >
             <span className="how-card-num">{card.number}</span>
             <div className={`how-card-icon ${card.iconClass}`}>

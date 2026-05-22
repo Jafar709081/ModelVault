@@ -900,6 +900,7 @@ body {
   cursor: pointer;
   position: relative;
   box-shadow: var(--shadow-card);
+  height: 100%;
 }
 
 .bento-card:hover {
@@ -908,12 +909,13 @@ body {
   transform: translateY(-4px);
 }
 
-.bento-card:nth-child(1) { grid-column: span 5; }
-.bento-card:nth-child(2) { grid-column: span 4; }
-.bento-card:nth-child(3) { grid-column: span 3; }
-.bento-card:nth-child(4) { grid-column: span 3; }
-.bento-card:nth-child(5) { grid-column: span 5; }
-.bento-card:nth-child(6) { grid-column: span 4; }
+/* Bento grid children — span classes on the .reveal wrapper divs */
+.bento-grid > *:nth-child(1) { grid-column: span 5; }
+.bento-grid > *:nth-child(2) { grid-column: span 4; }
+.bento-grid > *:nth-child(3) { grid-column: span 3; }
+.bento-grid > *:nth-child(4) { grid-column: span 3; }
+.bento-grid > *:nth-child(5) { grid-column: span 5; }
+.bento-grid > *:nth-child(6) { grid-column: span 4; }
 
 .bento-card-img {
   width: 100%;
@@ -1228,6 +1230,56 @@ body {
 .delay-5 { animation-delay: 0.5s; }
 
 @keyframes spin { to { transform: rotate(360deg); } }
+
+/* ============================================
+   SCROLL REVEAL — IntersectionObserver-driven
+   .reveal starts hidden; when data-revealed is
+   set by the hook, it transitions in.
+   --stagger (integer) staggers siblings.
+============================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.55s ease,
+    transform 0.55s ease;
+  /* 80ms per sibling, capped reasonably */
+  transition-delay: calc(var(--stagger, 0) * 80ms);
+}
+
+.reveal[data-revealed="true"] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Section headings use a simpler self-triggered fade
+   so they don't need the container observer */
+.reveal-heading {
+  opacity: 0;
+  transform: translateY(18px);
+  animation: fade-in-up 0.55s ease forwards;
+  /* short delay so it fires when section scrolls in */
+}
+
+/* ============================================
+   PAGE TRANSITION
+   .page-transition-root starts slightly
+   offset + invisible; data-entered triggers
+   the CSS transition one frame later.
+============================================ */
+.page-transition-root {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.page-transition-root[data-entered="true"] {
+  opacity: 1;
+  transform: translateY(0);
+}
 
 /* ============================================
    PAGE DARK BASE (login / add-project)
@@ -2260,12 +2312,12 @@ body {
     grid-template-columns: repeat(6, 1fr);
   }
 
-  .bento-card:nth-child(1) { grid-column: span 3; }
-  .bento-card:nth-child(2) { grid-column: span 3; }
-  .bento-card:nth-child(3) { grid-column: span 3; }
-  .bento-card:nth-child(4) { grid-column: span 3; }
-  .bento-card:nth-child(5) { grid-column: span 3; }
-  .bento-card:nth-child(6) { grid-column: span 3; }
+  .bento-grid > *:nth-child(1) { grid-column: span 3; }
+  .bento-grid > *:nth-child(2) { grid-column: span 3; }
+  .bento-grid > *:nth-child(3) { grid-column: span 3; }
+  .bento-grid > *:nth-child(4) { grid-column: span 3; }
+  .bento-grid > *:nth-child(5) { grid-column: span 3; }
+  .bento-grid > *:nth-child(6) { grid-column: span 3; }
 
   .categories-grid { grid-template-columns: repeat(4, 1fr); }
 
