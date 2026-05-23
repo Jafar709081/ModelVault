@@ -28,7 +28,9 @@ export default function Categories() {
               className="category-card reveal"
               style={{ "--stagger": i } as React.CSSProperties}
             >
-              <span className="category-icon">{cat.icon}</span>
+              <div className="category-icon-wrap">
+                <span className="category-icon">{cat.icon}</span>
+              </div>
               <span className="category-name">{cat.name}</span>
               <span className="category-count">{cat.count}</span>
             </button>
