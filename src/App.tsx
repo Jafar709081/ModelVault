@@ -3,9 +3,11 @@ import Home from "@/pages/Home";
 import Login from "@/pages/Login";
 import AddProject from "@/pages/AddProject";
 import ProjectDetail from "@/pages/ProjectDetail";
+import { ThemeProvider } from "@/contexts/ThemeContext";
 
 function App() {
   return (
+    <ThemeProvider>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
@@ -15,6 +17,7 @@ function App() {
         <Route path="*" element={<Home />} />
       </Routes>
     </BrowserRouter>
+    </ThemeProvider>
   );
 }
 

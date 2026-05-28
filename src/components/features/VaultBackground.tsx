@@ -226,20 +226,8 @@ export default function VaultBackground() {
         if (p.y > canvas.height) p.y = 0;
 
         const pulseOpacity = p.opacity * (0.6 + Math.sin(p.pulse) * 0.4);
-        const glow = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 4);
-        glow.addColorStop(0, p.color.replace(")", `,${pulseOpacity})`).replace("rgb", "rgba").replace("#", "rgba(").replace("rgb(", "rgba(").replace(/rgba\(([^)]+)\)/, (m) => {
-          const hex = p.color;
-          if (hex.startsWith("#")) {
-            const r = parseInt(hex.slice(1, 3), 16);
-            const g = parseInt(hex.slice(3, 5), 16);
-            const b = parseInt(hex.slice(5, 7), 16);
-            return `rgba(${r},${g},${b},${pulseOpacity})`;
-          }
-          return m;
-        }));
-        glow.addColorStop(1, "rgba(0,0,0,0)");
 
-        // Draw as glowing dot
+        // Parse hex color to rgb components
         const hexColor = p.color;
         const r = parseInt(hexColor.slice(1, 3), 16);
         const g = parseInt(hexColor.slice(3, 5), 16);
